@@ -14,6 +14,4 @@ export interface ScreenElement extends Drawable {
 export interface Sprite {
   image: HTMLImageElement
   numberOfFrames: number
-  start: number // refers to y axix of sprite, should not be modified
-  startOverlay: number // when the sprite has more then 8 images, use this to move the y axix
 }

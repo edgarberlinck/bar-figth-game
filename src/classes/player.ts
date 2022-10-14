@@ -5,18 +5,11 @@ import { MovingSpeed, Position, Size } from '../common/types'
 
 const PLAYER_SPEED_WALKING = 1
 const PLAYER_SPEED_RUNNING = 3
-const PLAYER_DEFAULT_SIZE: Size = { width: 200, heigth: 150 }
-const MAX_SPRITES_PER_LINE = 7
+const PLAYER_DEFAULT_SIZE: Size = { width: 150, heigth: 150 }
 const PLAYER_SPRITE_DIMENSIONS: Size = {
-  width: 56,
-  heigth: 56,
+  width: 126,
+  heigth: 110,
 }
-
-const PLAYER_SPRITES = [
-  '/public/assets/player/char_blue_1.png',
-  '/public/assets/player/char_blue_2.png',
-]
-
 export default class Player implements ScreenElement {
   public position: Position
   public size: Size
@@ -24,14 +17,17 @@ export default class Player implements ScreenElement {
   public movingSpeed: MovingSpeed
 
   // Player sprites
-  public hold: Sprite
-  public walking: Sprite
-  public running: Sprite
+  public idleLeft: Sprite
+  public idleRight: Sprite
+  public walkingLeft: Sprite
+  public walkingRight: Sprite
+  public runningLeft: Sprite
+  public runningRight: Sprite
 
   // Animation utils
   public currentFrame: number = 0
   public elapsedFrames: number = 0
-  public overlayFrames: number = 0
+  public currentDirection: MovingDirection = MovingDirection.LEFT
   public imageToDraw: Sprite
   // Player state
   public state: PlayerState
@@ -47,30 +43,44 @@ export default class Player implements ScreenElement {
     this.position = position
     this.size = PLAYER_DEFAULT_SIZE
     this.movingSpeed = { x: 0, y: 0 }
-
-    this.hold = {
+    // - Idle
+    this.idleLeft = {
       image: new Image(),
-      numberOfFrames: 5,
-      start: 0,
-      startOverlay: 0,
+      numberOfFrames: 3,
     }
-    this.hold.image.src = PLAYER_SPRITES[0]
+    this.idleLeft.image.src = '/public/assets/jack/Idle-left.png'
 
-    this.walking = {
+    this.idleRight = {
       image: new Image(),
-      numberOfFrames: 9,
-      start: 0,
-      startOverlay: 0,
+      numberOfFrames: 3,
     }
-    this.walking.image.src = PLAYER_SPRITES[1]
+    this.idleRight.image.src = '/public/assets/jack/Idle-right.png'
+    // ------------------
 
-    this.running = {
+    // - walking
+    this.walkingLeft = {
       image: new Image(),
-      numberOfFrames: 7,
-      start: PLAYER_SPRITE_DIMENSIONS.width * 2,
-      startOverlay: 0,
+      numberOfFrames: 3,
     }
-    this.running.image.src = PLAYER_SPRITES[0]
+    this.walkingLeft.image.src = '/public/assets/jack/walking-left.png'
+
+    this.walkingRight = {
+      image: new Image(),
+      numberOfFrames: 3,
+    }
+    this.walkingRight.image.src = '/public/assets/jack/walking-right.png' // TODO: Fix the walking right sprite, doesn't not looks like he is walking at all
+    // ------------------
+    this.runningLeft = {
+      image: new Image(),
+      numberOfFrames: 3,
+    }
+    this.runningLeft.image.src = '/public/assets/jack/walking-left.png' //TODO: I need to do a running sprite later
+
+    this.runningRight = {
+      image: new Image(),
+      numberOfFrames: 3,
+    }
+    this.runningRight.image.src = '/public/assets/jack/walking-right.png' //TODO: I need to do a running sprite later
 
     this.state = PlayerState.HOLD
     this.imageToDraw = this.hold
@@ -83,6 +93,7 @@ export default class Player implements ScreenElement {
 
   move(direction: MovingDirection, running: boolean = false) {
     this.state = running ? PlayerState.RUNNING : PlayerState.WALKING
+    this.currentDirection = direction
     const speed = running ? PLAYER_SPEED_RUNNING : PLAYER_SPEED_WALKING
     switch (direction) {
       case MovingDirection.LEFT:
@@ -111,56 +122,44 @@ export default class Player implements ScreenElement {
   currentStateSprite() {
     switch (this.state) {
       case PlayerState.HOLD:
-        return this.hold
+        return this.currentDirection === MovingDirection.LEFT
+          ? this.idleLeft
+          : this.idleRight
       case PlayerState.WALKING:
-        return this.walking
+        return this.currentDirection === MovingDirection.RIGHT
+          ? this.walkingRight
+          : this.walkingLeft
       case PlayerState.RUNNING:
-        return this.running
+        return this.currentDirection === MovingDirection.RIGHT
+          ? this.runningRight
+          : this.runningLeft
       default:
-        return this.hold
+        return this.this.idleLeft
     }
   }
 
   update() {
-    this.draw()
     this.position.x += this.movingSpeed.x
     this.position.y += this.movingSpeed.y
 
     this.imageToDraw = this.currentStateSprite()
 
     this.elapsedFrames++
-    if (this.elapsedFrames % 12 === 0) {
-      if (this.currentFrame >= this.imageToDraw.numberOfFrames) {
+    if (this.elapsedFrames % 20 === 0) {
+      if (this.currentFrame >= this.imageToDraw.numberOfFrames - 1) {
         this.currentFrame = 0
-        this.overlayFrames = 0
-        this.imageToDraw.startOverlay = this.imageToDraw.start
       } else {
         this.currentFrame++
-        if (this.currentFrame >= MAX_SPRITES_PER_LINE) {
-          this.imageToDraw.startOverlay =
-            PLAYER_SPRITE_DIMENSIONS.width + this.imageToDraw.start
-          if (
-            this.overlayFrames <
-            this.imageToDraw.numberOfFrames - MAX_SPRITES_PER_LINE - 1
-          ) {
-            this.overlayFrames++
-          } else {
-            this.overlayFrames = 0
-          }
-        }
       }
     }
+    this.draw()
   }
 
   draw() {
-    let frame = this.currentFrame
-    if (frame >= MAX_SPRITES_PER_LINE) {
-      frame = this.overlayFrames
-    }
     this.context.drawImage(
       this.imageToDraw.image,
-      PLAYER_SPRITE_DIMENSIONS.width * frame,
-      this.imageToDraw.startOverlay,
+      PLAYER_SPRITE_DIMENSIONS.width * this.currentFrame,
+      0,
       PLAYER_SPRITE_DIMENSIONS.width,
       PLAYER_SPRITE_DIMENSIONS.heigth,
       this.position.x,

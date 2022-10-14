@@ -3,8 +3,8 @@ import { MovingDirection } from './common/enum'
 
 export default function startGame(canvas: HTMLCanvasElement): void {
   // Canvas general configuration
-  canvas.width = 64 * 16 // 1024
-  canvas.height = 64 * 9 // 576
+  canvas.width = 80 * 16 // 1280
+  canvas.height = 80 * 9 // 720
 
   // Your context
   const canvasContext: CanvasRenderingContext2D = canvas.getContext('2d')
@@ -37,8 +37,13 @@ export default function startGame(canvas: HTMLCanvasElement): void {
   function startAnimationFrame() {
     if (!canvasContext) return
     window.requestAnimationFrame(startAnimationFrame)
+
     // Clear canvas before add elements
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+    // Draw a tamporary background
+    canvasContext.fillStyle = 'white'
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+
     // The game begins here
     // - Player movement
     player.stop()
