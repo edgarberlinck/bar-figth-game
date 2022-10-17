@@ -4,7 +4,7 @@
 
 This is a game that simulates a bar figth. Kick some assess dude!
 
-Still in progress.
+# Still in progress.
 
 ## ROADMAP
 
@@ -13,9 +13,16 @@ Still in progress.
 - [x] Adding assets for player (Jack)
 - [x] Idle
 - [x] Moving
+- [ ] Taking damage
+- [ ] Dead
 - [ ] Fix moving to the right
 - [ ] Attack
 - [ ] Critical Attack
+
+### Map
+
+- [ ] Background
+- [ ] Interactive objects
 
 ### Game
 
