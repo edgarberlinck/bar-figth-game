@@ -93,7 +93,11 @@ export default class Player implements ScreenElement {
 
   move(direction: MovingDirection, running: boolean = false) {
     this.state = running ? PlayerState.RUNNING : PlayerState.WALKING
-    this.currentDirection = direction
+
+    if ([MovingDirection.LEFT, MovingDirection.RIGHT].includes(direction)) {
+      this.currentDirection = direction
+    }
+
     const speed = running ? PLAYER_SPEED_RUNNING : PLAYER_SPEED_WALKING
     switch (direction) {
       case MovingDirection.LEFT:
