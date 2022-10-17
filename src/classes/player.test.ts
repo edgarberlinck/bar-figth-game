@@ -68,6 +68,28 @@ describe('player', () => {
     })
   })
 
+  describe('moving direction', () => {
+    beforeEach(() => {
+      vi.resetAllMocks()
+      player = new Player({ position: fakePosition, context: fakeContext })
+    })
+    it('should update the direction when move to left/right', () => {
+      expect(player.currentDirection).toBe(MovingDirection.LEFT)
+      player.move(MovingDirection.RIGHT, false)
+      expect(player.currentDirection).toBe(MovingDirection.RIGHT)
+      player.move(MovingDirection.LEFT, false)
+      expect(player.currentDirection).toBe(MovingDirection.LEFT)
+    })
+
+    it('should not update the direction when move to top/botton', () => {
+      player.move(MovingDirection.RIGHT, false)
+      player.move(MovingDirection.TOP, false)
+      expect(player.currentDirection).toBe(MovingDirection.RIGHT)
+      player.move(MovingDirection.BOTTON, false)
+      expect(player.currentDirection).toBe(MovingDirection.RIGHT)
+    })
+  })
+
   describe('boundaries', () => {
     beforeEach(() => {
       vi.resetAllMocks()
