@@ -1,5 +1,5 @@
 ![Tests](https://github.com/edgarberlinck/bar-figth-game/actions/workflows/run-tests.yml/badge.svg)
-[![TypeScript](https://badges.frapsoft.com/typescript/love/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
 # Bar Fight Game
 
