@@ -22,7 +22,7 @@ This is a game that simulates a bar figth. Kick some assess dude!
 
 ### Map
 
-- [ ] Background
+- [x] Background
 - [ ] Interactive objects
 
 ### Game
@@ -33,3 +33,7 @@ This is a game that simulates a bar figth. Kick some assess dude!
 - [ ] Take damage
 - [ ] Stamina system
 - [ ] Level up system
+
+### Sounds
+
+- [x] Find something like [this](https://www.epidemicsound.com/music/playlists/metal/)

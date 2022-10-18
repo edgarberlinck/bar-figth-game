@@ -34,14 +34,20 @@ export default function startGame(canvas: HTMLCanvasElement): void {
     },
   }
 
+  // Background
+  const background = new Image()
+  background.src = '/public/assets/background.png'
+
   function startAnimationFrame() {
     if (!canvasContext) return
     window.requestAnimationFrame(startAnimationFrame)
 
     // Clear canvas before add elements
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-    // Draw a tamporary background
-    canvasContext.fillStyle = 'white'
+    canvasContext.drawImage(background, 0, 0, canvas.width, canvas.height)
+
+    // Draw a semi-transparent backround for a better contrast
+    canvasContext.fillStyle = 'rgb(255,255,255, .1)'
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
 
     // The game begins here
