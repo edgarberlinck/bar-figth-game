@@ -71,7 +71,7 @@ export default class Player implements ScreenElement {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.walkingRight.image.src = '/assets/jack/walking-right.png' // TODO: Fix the walking right sprite, doesn't not looks like he is walking at all
+    this.walkingRight.image.src = '/assets/jack/walking-right.png'
     // ------------------
     this.runningLeft = {
       image: new Image(),
