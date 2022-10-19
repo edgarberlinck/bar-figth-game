@@ -112,7 +112,8 @@ export default class Player implements ScreenElement {
     this.hookAttackRight.image.src = '/public/assets/jack/hook-right.png'
 
     this.state = PlayerState.HOLD
-    this.imageToDraw = this.hold
+    this.currentDirection = MovingDirection.LEFT
+    this.imageToDraw = this.idleLeft
   }
 
   attack(critical: boolean) {

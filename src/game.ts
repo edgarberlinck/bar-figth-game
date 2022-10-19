@@ -11,7 +11,7 @@ export default function startGame(canvas: HTMLCanvasElement): void {
 
   // Hero Creation
   const player: Player = new Player({
-    position: { x: 100, y: 150 },
+    position: { x: 1000, y: 150 },
     context: canvasContext,
   })
 
