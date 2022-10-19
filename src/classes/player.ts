@@ -51,13 +51,13 @@ export default class Player implements ScreenElement {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.idleLeft.image.src = '/public/assets/jack/Idle-left.png'
+    this.idleLeft.image.src = '/assets/jack/Idle-left.png'
 
     this.idleRight = {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.idleRight.image.src = '/public/assets/jack/Idle-right.png'
+    this.idleRight.image.src = '/assets/jack/Idle-right.png'
     // ------------------
 
     // - walking
@@ -65,50 +65,50 @@ export default class Player implements ScreenElement {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.walkingLeft.image.src = '/public/assets/jack/walking-left.png'
+    this.walkingLeft.image.src = '/assets/jack/walking-left.png'
 
     this.walkingRight = {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.walkingRight.image.src = '/public/assets/jack/walking-right.png' // TODO: Fix the walking right sprite, doesn't not looks like he is walking at all
+    this.walkingRight.image.src = '/assets/jack/walking-right.png' // TODO: Fix the walking right sprite, doesn't not looks like he is walking at all
     // ------------------
     this.runningLeft = {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.runningLeft.image.src = '/public/assets/jack/walking-left.png' //TODO: I need to do a running sprite later
+    this.runningLeft.image.src = '/assets/jack/walking-left.png' //TODO: I need to do a running sprite later
 
     this.runningRight = {
       image: new Image(),
       numberOfFrames: 3,
     }
-    this.runningRight.image.src = '/public/assets/jack/walking-right.png' //TODO: I need to do a running sprite later
+    this.runningRight.image.src = '/assets/jack/walking-right.png' //TODO: I need to do a running sprite later
 
     // - attacking
     this.jabAttackLeft = {
       image: new Image(),
       numberOfFrames: 2,
     }
-    this.jabAttackLeft.image.src = '/public/assets/jack/jab-left.png'
+    this.jabAttackLeft.image.src = '/assets/jack/jab-left.png'
 
     this.jabAttackRight = {
       image: new Image(),
       numberOfFrames: 2,
     }
-    this.jabAttackRight.image.src = '/public/assets/jack/jab-right.png'
+    this.jabAttackRight.image.src = '/assets/jack/jab-right.png'
 
     this.hookAttackLeft = {
       image: new Image(),
       numberOfFrames: 5,
     }
-    this.hookAttackLeft.image.src = '/public/assets/jack/hook-left.png'
+    this.hookAttackLeft.image.src = '/assets/jack/hook-left.png'
 
     this.hookAttackRight = {
       image: new Image(),
       numberOfFrames: 5,
     }
-    this.hookAttackRight.image.src = '/public/assets/jack/hook-right.png'
+    this.hookAttackRight.image.src = '/assets/jack/hook-right.png'
 
     this.state = PlayerState.HOLD
     this.currentDirection = MovingDirection.LEFT

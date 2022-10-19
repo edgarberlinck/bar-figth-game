@@ -42,7 +42,7 @@ export default function startGame(canvas: HTMLCanvasElement): void {
 
   // Background
   const background = new Image()
-  background.src = '/public/assets/background.png'
+  background.src = '/assets/background.png'
 
   function startAnimationFrame() {
     if (!canvasContext) return
