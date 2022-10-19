@@ -11,7 +11,7 @@ export default function startGame(canvas: HTMLCanvasElement): void {
 
   // Hero Creation
   const player: Player = new Player({
-    position: { x: 100, y: 150 },
+    position: { x: 1000, y: 150 },
     context: canvasContext,
   })
 
@@ -27,6 +27,12 @@ export default function startGame(canvas: HTMLCanvasElement): void {
       pressed: false,
     },
     w: {
+      pressed: false,
+    },
+    l: {
+      pressed: false,
+    },
+    k: {
       pressed: false,
     },
     Space: {
@@ -61,6 +67,10 @@ export default function startGame(canvas: HTMLCanvasElement): void {
       player.move(MovingDirection.TOP, keys.Space.pressed)
     } else if (keys.s.pressed) {
       player.move(MovingDirection.BOTTON, keys.Space.pressed)
+    } else if (keys.l.pressed) {
+      player.attack()
+    } else if (keys.k.pressed) {
+      player.attack(true)
     }
 
     player.update()

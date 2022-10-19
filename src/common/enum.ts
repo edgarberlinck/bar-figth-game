@@ -10,6 +10,7 @@ export enum PlayerState {
   HOLD,
   WALKING,
   ATTACKING,
+  CRITICAL_ATTACK,
   HURT,
   DEAD,
 }
