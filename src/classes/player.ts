@@ -34,7 +34,6 @@ export default class Player implements ScreenElement {
   public imageToDraw: Sprite
   // Player state
   public state: PlayerState
-  public numberOfBlows: number = 0
 
   constructor({
     context,
