@@ -29,6 +29,12 @@ export default function startGame(canvas: HTMLCanvasElement): void {
     w: {
       pressed: false,
     },
+    l: {
+      pressed: false,
+    },
+    k: {
+      pressed: false,
+    },
     Space: {
       pressed: false,
     },
@@ -61,6 +67,10 @@ export default function startGame(canvas: HTMLCanvasElement): void {
       player.move(MovingDirection.TOP, keys.Space.pressed)
     } else if (keys.s.pressed) {
       player.move(MovingDirection.BOTTON, keys.Space.pressed)
+    } else if (keys.l.pressed) {
+      player.attack()
+    } else if (keys.k.pressed) {
+      player.attack(true)
     }
 
     player.update()

@@ -9,7 +9,7 @@ This is a game that simulates a bar figth. Kick some assess dude!
 
 ## ROADMAP
 
-### Sprites
+### Interface
 
 - [x] Adding assets for player (Jack)
 - [x] Idle
@@ -17,8 +17,10 @@ This is a game that simulates a bar figth. Kick some assess dude!
 - [ ] Taking damage
 - [ ] Dead
 - [ ] Fix moving to the right
-- [ ] Attack
-- [ ] Critical Attack
+- [x] Attack
+- [x] Critical Attack
+- [ ] Add HP
+- [ ] Add stamina
 
 ### Map
 

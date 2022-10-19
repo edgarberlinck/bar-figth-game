@@ -23,7 +23,10 @@ export default class Player implements ScreenElement {
   public walkingRight: Sprite
   public runningLeft: Sprite
   public runningRight: Sprite
-
+  public jabAttackLeft: Sprite
+  public jabAttackRight: Sprite
+  public hookAttackLeft: Sprite
+  public hookAttackRight: Sprite
   // Animation utils
   public currentFrame: number = 0
   public elapsedFrames: number = 0
@@ -31,6 +34,7 @@ export default class Player implements ScreenElement {
   public imageToDraw: Sprite
   // Player state
   public state: PlayerState
+  public numberOfBlows: number = 0
 
   constructor({
     context,
@@ -82,8 +86,37 @@ export default class Player implements ScreenElement {
     }
     this.runningRight.image.src = '/public/assets/jack/walking-right.png' //TODO: I need to do a running sprite later
 
+    // - attacking
+    this.jabAttackLeft = {
+      image: new Image(),
+      numberOfFrames: 2,
+    }
+    this.jabAttackLeft.image.src = '/public/assets/jack/jab-left.png'
+
+    this.jabAttackRight = {
+      image: new Image(),
+      numberOfFrames: 2,
+    }
+    this.jabAttackRight.image.src = '/public/assets/jack/jab-right.png'
+
+    this.hookAttackLeft = {
+      image: new Image(),
+      numberOfFrames: 5,
+    }
+    this.hookAttackLeft.image.src = '/public/assets/jack/hook-left.png'
+
+    this.hookAttackRight = {
+      image: new Image(),
+      numberOfFrames: 5,
+    }
+    this.hookAttackRight.image.src = '/public/assets/jack/hook-right.png'
+
     this.state = PlayerState.HOLD
     this.imageToDraw = this.hold
+  }
+
+  attack(critical: boolean) {
+    this.state = critical ? PlayerState.CRITICAL_ATTACK : PlayerState.ATTACKING
   }
 
   stop() {
@@ -123,22 +156,49 @@ export default class Player implements ScreenElement {
     }
   }
 
-  currentStateSprite() {
+  updateImageToDraw() {
+    if (
+      [PlayerState.ATTACKING, PlayerState.CRITICAL_ATTACK].includes(
+        this.state
+      ) &&
+      this.currentFrame < this.imageToDraw.numberOfFrames - 1
+    ) {
+      return
+    }
+
     switch (this.state) {
       case PlayerState.HOLD:
-        return this.currentDirection === MovingDirection.LEFT
-          ? this.idleLeft
-          : this.idleRight
+        this.imageToDraw =
+          this.currentDirection === MovingDirection.LEFT
+            ? this.idleLeft
+            : this.idleRight
+        break
       case PlayerState.WALKING:
-        return this.currentDirection === MovingDirection.RIGHT
-          ? this.walkingRight
-          : this.walkingLeft
+        this.imageToDraw =
+          this.currentDirection === MovingDirection.RIGHT
+            ? this.walkingRight
+            : this.walkingLeft
+        break
       case PlayerState.RUNNING:
-        return this.currentDirection === MovingDirection.RIGHT
-          ? this.runningRight
-          : this.runningLeft
+        this.imageToDraw =
+          this.currentDirection === MovingDirection.RIGHT
+            ? this.runningRight
+            : this.runningLeft
+        break
+      case PlayerState.ATTACKING:
+        this.imageToDraw =
+          this.currentDirection === MovingDirection.RIGHT
+            ? this.jabAttackRight
+            : this.jabAttackLeft
+        break
+      case PlayerState.CRITICAL_ATTACK:
+        this.imageToDraw =
+          this.currentDirection === MovingDirection.RIGHT
+            ? this.hookAttackRight
+            : this.hookAttackLeft
+        break
       default:
-        return this.this.idleLeft
+        this.imageToDraw = this.this.idleLeft
     }
   }
 
@@ -146,7 +206,7 @@ export default class Player implements ScreenElement {
     this.position.x += this.movingSpeed.x
     this.position.y += this.movingSpeed.y
 
-    this.imageToDraw = this.currentStateSprite()
+    this.updateImageToDraw()
 
     this.elapsedFrames++
     if (this.elapsedFrames % 20 === 0) {
