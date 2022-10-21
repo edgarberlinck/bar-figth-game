@@ -32,6 +32,9 @@ export default class Player implements ScreenElement {
   public elapsedFrames: number = 0
   public currentDirection: MovingDirection = MovingDirection.LEFT
   public imageToDraw: Sprite
+  public isAttacking: boolean = false
+  // Events
+  public onAfterAttack: () => void
   // Player state
   public state: PlayerState
 
@@ -88,13 +91,13 @@ export default class Player implements ScreenElement {
     // - attacking
     this.jabAttackLeft = {
       image: new Image(),
-      numberOfFrames: 2,
+      numberOfFrames: 4,
     }
     this.jabAttackLeft.image.src = '/assets/jack/jab-left.png'
 
     this.jabAttackRight = {
       image: new Image(),
-      numberOfFrames: 2,
+      numberOfFrames: 4,
     }
     this.jabAttackRight.image.src = '/assets/jack/jab-right.png'
 
@@ -117,6 +120,7 @@ export default class Player implements ScreenElement {
 
   attack(critical: boolean) {
     this.state = critical ? PlayerState.CRITICAL_ATTACK : PlayerState.ATTACKING
+    this.isAttacking = true
   }
 
   stop() {
@@ -212,6 +216,10 @@ export default class Player implements ScreenElement {
     if (this.elapsedFrames % 20 === 0) {
       if (this.currentFrame >= this.imageToDraw.numberOfFrames - 1) {
         this.currentFrame = 0
+        if (this.onAfterAttack) {
+          this.onAfterAttack()
+          this.isAttacking = false
+        }
       } else {
         this.currentFrame++
       }

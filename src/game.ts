@@ -9,12 +9,6 @@ export default function startGame(canvas: HTMLCanvasElement): void {
   // Your context
   const canvasContext: CanvasRenderingContext2D = canvas.getContext('2d')
 
-  // Hero Creation
-  const player: Player = new Player({
-    position: { x: 1000, y: 150 },
-    context: canvasContext,
-  })
-
   // Keyboard control
   const keys = {
     a: {
@@ -31,18 +25,38 @@ export default function startGame(canvas: HTMLCanvasElement): void {
     },
     l: {
       pressed: false,
-    },
-    k: {
-      pressed: false,
+      hitCount: 1,
+      cantHold: true,
     },
     Space: {
       pressed: false,
     },
   }
 
+  // Hero Creation
+  const player: Player = new Player({
+    position: { x: 1000, y: 150 },
+    context: canvasContext,
+  })
+
+  player.onAfterAttack = () => {
+    keys.l.pressed = false
+    console.log(keys.l.hitCount)
+    if (player.isAttacking) {
+      if (keys.l.hitCount >= 3) {
+        keys.l.hitCount = 1
+      } else {
+        keys.l.hitCount++
+      }
+    }
+  }
+
   // Background
   const background = new Image()
   background.src = '/assets/background.png'
+
+  let elapsedGameFrames: number = 0
+  let afterUpdateCallback: () => void = null
 
   function startAnimationFrame() {
     if (!canvasContext) return
@@ -55,10 +69,10 @@ export default function startGame(canvas: HTMLCanvasElement): void {
     // Draw a semi-transparent backround for a better contrast
     canvasContext.fillStyle = 'rgb(255,255,255, .1)'
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-
     // The game begins here
     // - Player movement
     player.stop()
+
     if (keys.a.pressed) {
       player.move(MovingDirection.LEFT, keys.Space.pressed)
     } else if (keys.d.pressed) {
@@ -68,12 +82,16 @@ export default function startGame(canvas: HTMLCanvasElement): void {
     } else if (keys.s.pressed) {
       player.move(MovingDirection.BOTTON, keys.Space.pressed)
     } else if (keys.l.pressed) {
-      player.attack()
-    } else if (keys.k.pressed) {
-      player.attack(true)
+      player.attack(keys.l.hitCount % 3 === 0)
     }
 
     player.update()
+    elapsedGameFrames++
+
+    // Clear the combo after some time
+    if (elapsedGameFrames % 300 === 0) {
+      keys.l.hitCount = 1
+    }
   }
 
   startAnimationFrame()
@@ -84,7 +102,12 @@ export default function startGame(canvas: HTMLCanvasElement): void {
   })
 
   window.addEventListener('keyup', (event: KeyboardEvent) => {
-    if (keys[event.key]) keys[event.key].pressed = false
+    if (keys[event.key]) {
+      if (!keys[event.key].cantHold) {
+        keys[event.key].pressed = false
+      }
+    }
+
     if (keys[event.code]) keys[event.code].pressed = false
   })
 }
