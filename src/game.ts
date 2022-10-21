@@ -41,7 +41,6 @@ export default function startGame(canvas: HTMLCanvasElement): void {
 
   player.onAfterAttack = () => {
     keys.l.pressed = false
-    console.log(keys.l.hitCount)
     if (player.isAttacking) {
       if (keys.l.hitCount >= 3) {
         keys.l.hitCount = 1
