@@ -9,6 +9,7 @@ export default function startGame(canvas: HTMLCanvasElement): void {
   // Your context
   const canvasContext: CanvasRenderingContext2D = canvas.getContext('2d')
 
+  // Button for background music
   document.getElementById('song').addEventListener("click", myFunction)
 
   let playlist = []
@@ -53,25 +54,27 @@ export default function startGame(canvas: HTMLCanvasElement): void {
   playlist[40] = './public/assets/songs/Plasmatics - Bookies Club 870 Detroit, MI 20-9-80 - 9 - Concrete Shoes.mp3'
   playlist[41] = './public/assets/songs/Riot In The Discoteque.mp3'
 
+  // Function responsible for playing the music
    function myFunction() {
     const audio = document.querySelector("audio")
     let i = 0;
+
     audio.addEventListener('ended', function () {
       i = ++i < playlist.length ? i : 0;
-      console.log(i)
       audio.src = playlist[i];
       audio.play();
     })
     audio.volume= 0.1;
     audio.loop = false;
     audio.src = playlist[getRandom(i)];
-    console.log(getRandom());
     audio.play();
   } 
 
+  // Plays the music at random value everytime
   function getRandom() {
     return Math.floor(Math.random()*playlist.length);
   }
+
   // Keyboard control
   const keys = {
     a: {
